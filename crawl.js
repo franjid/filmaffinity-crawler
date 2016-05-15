@@ -37,25 +37,24 @@ var importFilm = function(film) {
     console.log('IMPORT FILM');
 };
 
-crawler.getProxy(function() {
-    async.eachSeries(charsToLookFor, function (char, callback) {
-        console.log('Getting number of pages for ' + char);
+async.eachSeries(charsToLookFor, function (char, callback) {
+    console.log('Getting number of pages for ' + char);
 
-        crawler.getNumPagesOfFilmsStartingWithChar(char, function (char, numPages) {
-            console.log('Start crawling for char ' + char + ' ' + numPages + ' pages');
+    crawler.getNumPagesOfFilmsStartingWithChar(char, function (char, numPages) {
+        console.log('Start crawling for char ' + char + ' ' + numPages + ' pages');
 
-            for (var page = 1; page <= numPages; page++) {
-                crawler.loadFilmsPages(char, page, function (filmId) {
-                    crawler.loadFilm(filmId, function (film) {
-                        importFilm(film);
-                    })
-                });
-            }
-        });
-
-        callback();
+        for (var page = 1; page <= numPages; page++) {
+            crawler.loadFilmsPages(char, page, function (filmId) {
+                crawler.loadFilm(filmId, function (film) {
+                    importFilm(film);
+                })
+            });
+        }
     });
+
+    callback();
 });
+
 
 
 
