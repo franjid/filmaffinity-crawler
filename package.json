@@ -12,6 +12,7 @@
     "mysql": "^2.10.0",
     "random-useragent": "^0.3.0",
     "rangegen": "^0.2.7",
-    "request": "^2.72.0"
+    "request": "^2.72.0",
+    "sys": "0.0.1"
   }
 }

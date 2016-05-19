@@ -8,53 +8,52 @@ var useragent = require('random-useragent');
 var cheerio = require('cheerio');
 
 var crawler = require(__dirname + '/lib/crawler.js');
+var dbImport = require(__dirname + '/lib/dbImport.js');
 
 global.parameters = ini.parse(
     fs.readFileSync(__dirname + '/config/parameters.ini', 'utf-8')
 ).parameters;
 
-/*
-const dbConnection = mysql.createConnection({
+global.dbConnection = mysql.createConnection({
     host: parameters.host,
     user: parameters.db_user,
     password: parameters.db_password,
     database: parameters.db_name
 });
-dbConnection.connect();
-*/
-//getToken(parameters, citiesToImport);
-
+global.dbConnection.connect();
 
 var charsToLookFor = [];
 var letters = rangegen('A', 'Z');
 
 charsToLookFor.push('res'); // 'res' is what they used for '*'
 charsToLookFor.push('0-9');
+charsToLookFor.push('A');
 //charsToLookFor = charsToLookFor.concat(letters);
 
-var importFilm = function(film) {
-    console.log(film);
-    console.log('IMPORT FILM');
-};
-
-async.eachSeries(charsToLookFor, function (char, callback) {
+async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
     console.log('Getting number of pages for ' + char);
 
     crawler.getNumPagesOfFilmsStartingWithChar(char, function (char, numPages) {
         console.log('Start crawling for char ' + char + ' ' + numPages + ' pages');
+        var pages = rangegen(1, numPages);
 
-        for (var page = 1; page <= numPages; page++) {
-            crawler.loadFilmsPages(char, page, function (filmId) {
-                crawler.loadFilm(filmId, function (film) {
-                    importFilm(film);
-                })
+        async.forEachLimit(pages, 2, function (page, loadCharFilmPage) {
+            crawler.loadFilmsPages(char, page, function (films) {
+                async.each(films, function(filmId, loadFilm) {
+                     crawler.loadFilm(filmId, function (film) {
+                        dbImport.importFilm(film);
+                     });
+
+                    loadFilm();
+                }, function(err) {
+                    console.log('All film ids from page ' + page + ' are imported');
+                    loadCharFilmPage();
+                });
             });
-        }
+
+            if (page == numPages) {
+                getCharNumberFilmPages();
+            }
+        });
     });
-
-    callback();
 });
-
-
-
-
