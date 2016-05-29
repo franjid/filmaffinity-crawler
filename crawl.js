@@ -22,13 +22,16 @@ global.dbConnection = mysql.createConnection({
 });
 global.dbConnection.connect();
 
-var charsToLookFor = [];
+var charsToLookFor = process.argv.slice(2);
+
+/*var charsToLookFor = [];
 var letters = rangegen('A', 'Z');
 
 charsToLookFor.push('res'); // 'res' is what they used for '*'
 charsToLookFor.push('0-9');
 //charsToLookFor.push('A');
 //charsToLookFor = charsToLookFor.concat(letters);
+*/
 
 async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
     global.log.info('Getting number of pages for ' + char);
@@ -46,7 +49,9 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
 
                     loadFilm();
                 }, function(err) {
-                    global.log.info('All film ids from page ' + page + ' are imported');
+                    global.log.info('All film ids from page ' +
+                        page + ' in [' + char + '] are imported (total pages ' + numPages + ')'
+                    );
                     loadCharFilmPage();
                 });
             });
@@ -56,4 +61,8 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
             }
         });
     });
-});
+},
+    function (err) {
+        console.log('FINISHED EVERYTHING HERE');
+    }
+);
