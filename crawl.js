@@ -2,10 +2,7 @@ var ini = require('ini');
 var fs = require('fs');
 var mysql = require('mysql');
 var async = require('async');
-var request = require('request');
 var rangegen = require('rangegen');
-var useragent = require('random-useragent');
-var cheerio = require('cheerio');
 
 var crawler = require(__dirname + '/lib/crawler.js');
 var dbImport = require(__dirname + '/lib/dbImport.js');
@@ -27,7 +24,7 @@ var letters = rangegen('A', 'Z');
 
 charsToLookFor.push('res'); // 'res' is what they used for '*'
 charsToLookFor.push('0-9');
-charsToLookFor.push('A');
+//charsToLookFor.push('A');
 //charsToLookFor = charsToLookFor.concat(letters);
 
 async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
