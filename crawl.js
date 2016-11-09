@@ -5,8 +5,10 @@ var mysql = require('mysql');
 var async = require('async');
 var rangegen = require('rangegen');
 
+
 var crawler = require(__dirname + '/lib/crawler.js');
 var dbImport = require(__dirname + '/lib/dbImport.js');
+var imgImport = require(__dirname + '/lib/imgImport.js');
 
 global.log = new Log('debug', fs.createWriteStream('crawler.log'));
 
@@ -22,16 +24,14 @@ global.dbConnection = mysql.createConnection({
 });
 global.dbConnection.connect();
 
-var charsToLookFor = process.argv.slice(2);
+global.filmError = {};
 
-/*var charsToLookFor = [];
+var charsToLookFor = [];
 var letters = rangegen('A', 'Z');
 
-charsToLookFor.push('res'); // 'res' is what they used for '*'
+//charsToLookFor.push('res'); // 'res' is what they used for '*'
 charsToLookFor.push('0-9');
-//charsToLookFor.push('A');
-//charsToLookFor = charsToLookFor.concat(letters);
-*/
+charsToLookFor = charsToLookFor.concat(letters);
 
 async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
     global.log.info('Getting number of pages for ' + char);
@@ -45,6 +45,7 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
                 async.each(films, function(filmId, loadFilm) {
                      crawler.loadFilm(filmId, function (film) {
                         dbImport.importFilm(film);
+                        imgImport.importPoster(film);
                      });
 
                     loadFilm();
@@ -63,6 +64,6 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
     });
 },
     function (err) {
-        console.log('FINISHED EVERYTHING HERE');
+        console.log('All done');
     }
 );
