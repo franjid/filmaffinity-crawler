@@ -5,7 +5,6 @@ var mysql = require('mysql');
 var async = require('async');
 var rangegen = require('rangegen');
 
-
 var crawler = require(__dirname + '/lib/crawler.js');
 var dbImport = require(__dirname + '/lib/dbImport.js');
 var imgImport = require(__dirname + '/lib/imgImport.js');
