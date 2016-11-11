@@ -43,8 +43,10 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
             crawler.loadFilmsPages(char, page, function (films) {
                 async.each(films, function(filmId, loadFilm) {
                      crawler.loadFilm(filmId, function (film) {
-                        dbImport.importFilm(film);
-                        imgImport.importPoster(film);
+                         if (!isNaN(film.year)) { // Films with no data: http://www.filmaffinity.com/es/film111997.html
+                            dbImport.importFilm(film);
+                            //imgImport.importPoster(film);
+                         }
                      });
 
                     loadFilm();
