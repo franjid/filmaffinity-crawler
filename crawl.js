@@ -15,15 +15,16 @@ global.parameters = ini.parse(
     fs.readFileSync(__dirname + '/config/parameters.ini', 'utf-8')
 ).parameters;
 
-global.dbConnection = mysql.createConnection({
+global.filmError = {};
+
+var dbPool = mysql.createPool({
     host: parameters.host,
     user: parameters.db_user,
     password: parameters.db_password,
-    database: parameters.db_name
+    database: parameters.db_name,
+    connectionLimit : 100
 });
-global.dbConnection.connect();
 
-global.filmError = {};
 
 var charsToLookFor = [];
 var letters = rangegen('A', 'Z');
@@ -44,8 +45,13 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
                 async.each(films, function(filmId, loadFilm) {
                      crawler.loadFilm(filmId, function (film) {
                          if (!isNaN(film.year)) { // Films with no data: http://www.filmaffinity.com/es/film111997.html
-                            dbImport.importFilm(film);
-                            //imgImport.importPoster(film);
+                            dbPool.getConnection(function(err, dbConnection) {
+                                dbImport.importFilm(dbConnection, film, function() {
+                                    dbConnection.release();
+                                });
+                            });
+
+                            imgImport.importPoster(film);
                          }
                      });
 
