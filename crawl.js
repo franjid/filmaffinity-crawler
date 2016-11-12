@@ -4,6 +4,7 @@ var Log = require('log');
 var mysql = require('mysql');
 var async = require('async');
 var rangegen = require('rangegen');
+var progressBar = require('progress');
 
 var crawler = require(__dirname + '/lib/crawler.js');
 var dbImport = require(__dirname + '/lib/dbImport.js');
@@ -37,7 +38,12 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
     global.log.info('Getting number of pages for ' + char);
 
     crawler.getNumPagesOfFilmsStartingWithChar(char, function (char, numPages) {
-        global.log.info('Start crawling for char ' + char + ' ' + numPages + ' pages');
+        var infoMessage = 'Crawling char [' + char + '] | ' + numPages + ' pages:';
+        global.log.info(infoMessage);
+        console.log(infoMessage);
+
+
+        var bar = new progressBar(':bar', { total: parseInt(numPages), clear: true });
         var pages = rangegen(1, numPages);
 
         async.forEachLimit(pages, 2, function (page, loadCharFilmPage) {
@@ -60,6 +66,7 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
                     global.log.info('All film ids from page ' +
                         page + ' in [' + char + '] are imported (total pages ' + numPages + ')'
                     );
+                    bar.tick();
                     loadCharFilmPage();
                 });
             });
