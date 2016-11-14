@@ -1,5 +1,5 @@
 var ini = require('ini');
-var fs = require('fs');
+var fs = require('graceful-fs');
 var Log = require('log');
 var mysql = require('mysql');
 var async = require('async');
