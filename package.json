@@ -1,10 +1,13 @@
 {
-  "name": "filmaffin-crawler",
-  "version": "0.0.1",
-  "private": true,
+  "name": "filmaffinity-crawler",
+  "version": "1.0.0",
   "scripts": {
     "crawl": "node crawl.js"
   },
+  "description": "Crawl and scrape films from filmaffinity.com",
+  "author": "Franjid",
+  "license": "MIT",
+  "homepage": "http://www.github.com/franjid",
   "dependencies": {
     "async": "^1.5.2",
     "cheerio": "^0.20.0",
