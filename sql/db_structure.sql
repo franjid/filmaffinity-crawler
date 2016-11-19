@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.12, for osx10.10 (x86_64)
 --
--- Host: localhost    Database: filmaffin
+-- Host: localhost    Database: filmaffinity
 -- ------------------------------------------------------
 -- Server version	5.7.12
 
