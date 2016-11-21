@@ -1,6 +1,6 @@
 # What is this?
 
-You are not a real programmer if you don't do a crawler/scraper for your favorite website at least once in your life. This is my second time with [Filmaffinity](www.filmaffinity.com).
+You are not a real programmer if you don't do a crawler/scraper for your favorite website at least once in your life. This is my second time with [Filmaffinity](http://www.filmaffinity.com).
 
 I wrote a scraper for it some years ago in PHP, and it kind of worked, but I wanted to try the power of [nodejs](https://nodejs.org).
 
