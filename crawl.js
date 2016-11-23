@@ -26,7 +26,6 @@ var dbPool = mysql.createPool({
     connectionLimit : 100
 });
 
-
 var charsToLookFor = [];
 var letters = rangegen('A', 'Z');
 
@@ -38,10 +37,9 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
     global.log.info('Getting number of pages for ' + char);
 
     crawler.getNumPagesOfFilmsStartingWithChar(char, function (char, numPages) {
-        var infoMessage = 'Crawling char [' + char + '] | ' + numPages + ' pages:';
+        var infoMessage = 'Crawling films starting with char [' + char + '] | ' + numPages + ' pages:';
         global.log.info(infoMessage);
         console.log(infoMessage);
-
 
         var bar = new progressBar(':bar', { total: parseInt(numPages), clear: true });
         var pages = rangegen(1, numPages);
