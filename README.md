@@ -21,32 +21,33 @@ Finally, to run this piece of code you have to use [Node.js](https://nodejs.org)
 # Steps to run
 
 1. Create a new database:
+
     ```
     CREATE DATABASE filmaffinity;
     ```
 
-2) Add a new user for that database and grant permissions:
+2. Add a new user for that database and grant permissions:
     ```
     CREATE USER 'filmaffinity'@'localhost' IDENTIFIED BY 'filmaffinity';
 
     GRANT ALL PRIVILEGES ON filmaffinity.* TO 'filmaffinity'@'localhost';
     ```
 
-3) Import database structure:
+3. Import database structure:
     ```
     mysql -ufilmaffinity -pfilmaffinity filmaffinity < sql/db_structure.sql
     ```
 
-4) Install node modules:
+4. Install node modules:
     ```
     npm install
     ```
 
-5) Run Tor and Polipo (or be sure that they are running as services).
+5. Run Tor and Polipo (or be sure that they are running as services).
 
-6) Double check that the database name, user and password you added in the previous steps match the ones in config/parameters.ini
+6. Double check that the database name, user and password you added in the previous steps match the ones in config/parameters.ini
 
-7) Run it!
+7. Run it!
     ```
     node crawl.js
     ```
