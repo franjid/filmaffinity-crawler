@@ -61,6 +61,10 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
 
                     loadFilm();
                 }, function(err) {
+                    if (err) {
+                        throw err;
+                    }
+
                     global.log.info('All film ids from page ' +
                         page + ' in [' + char + '] are imported (total pages ' + numPages + ')'
                     );
@@ -76,6 +80,10 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
     });
 },
     function (err) {
+        if (err) {
+            throw err;
+        }
+
         console.log('All done');
     }
 );
