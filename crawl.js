@@ -50,12 +50,16 @@ async.forEachLimit(charsToLookFor, 1, function (char, getCharNumberFilmPages) {
                      crawler.loadFilm(filmId, function (film) {
                          if (!isNaN(film.year)) { // Films with no data: http://www.filmaffinity.com/es/film111997.html
                             dbPool.getConnection(function(err, dbConnection) {
+                                dbImport.filmExistsInDb(dbConnection, film.id, function(filmExists) {
+                                    if (!filmExists) {
+                                        imgImport.importPoster(film);
+                                    }
+                                });
+
                                 dbImport.importFilm(dbConnection, film, function() {
                                     dbConnection.release();
                                 });
                             });
-
-                            imgImport.importPoster(film);
                          }
                      });
 
