@@ -13,16 +13,6 @@ global.parameters = ini.parse(
 global.filmError = {};
 
 arguments.getAction(function(action) {
-    var crawler;
-
-    switch (action) {
-        case 'all':
-            crawler = require(__dirname + '/lib/actions/all.js');
-            break;
-        case 'popular':
-            crawler = require(__dirname + '/lib/actions/popular.js');
-            break;
-    }
-
+    var crawler = require(__dirname + '/lib/actions/' + action + '.js');
     crawler.start();
 });
