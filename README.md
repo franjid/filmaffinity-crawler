@@ -49,9 +49,15 @@ Finally, to run this piece of code you have to use [Node.js](https://nodejs.org)
 
 7. Run it!
     ```
-    node crawl.js
+    node crawl.js action
     ```
 
-    It will start crawling films that start with numbers (two pages at a time), then letter A. When 'A' is completed it will continue with 'B'. Then 'C'... I'm sure you get the pattern ;) All data will be populated to the database and the poster images will be downloaded to the "img" folder.
+    You must specify one valid action:
+    ```
+    all: Crawls all the movies
+    popular: Crawls most popular movies from last week
+    ```
+
+    If you run it with the "all" action, it will start crawling films that start with numbers (two pages at a time), then letter A. When 'A' is completed it will continue with 'B'. Then 'C'... I'm sure you get the pattern ;) All data will be populated to the database and the poster images will be downloaded to the "img" folder.
 
     You can take a look at crawler.log to see what is happening behind the scenes.
