@@ -227,8 +227,23 @@ CREATE TABLE `film` (
   `officialReviews` text,
   `rating` tinyint(3) unsigned DEFAULT NULL,
   `numRatings` mediumint(8) unsigned DEFAULT NULL,
-  `inTheatres` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`idFilm`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `filmInTheatres`
+--
+
+DROP TABLE IF EXISTS `filmInTheatres`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `filmInTheatres` (
+  `idFilm` int(10) unsigned NOT NULL,
+  `releaseDate` date NOT NULL,
+  PRIMARY KEY (`idFilm`),
+  UNIQUE KEY `idFilm_UNIQUE` (`idFilm`),
+  CONSTRAINT `fk_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -301,4 +316,4 @@ CREATE TABLE `topic` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-09  9:33:44
+-- Dump completed on 2017-02-17 20:32:37
