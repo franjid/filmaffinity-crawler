@@ -225,7 +225,7 @@ CREATE TABLE `film` (
   `awards` text,
   `synopsis` text,
   `officialReviews` text,
-  `rating` tinyint(3) unsigned DEFAULT NULL,
+  `rating` decimal(2,1) unsigned NULL DEFAULT NULL,
   `numRatings` mediumint(8) unsigned DEFAULT NULL,
   PRIMARY KEY (`idFilm`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
