@@ -221,7 +221,7 @@ CREATE TABLE `film` (
   `year` char(4) DEFAULT NULL,
   `duration` mediumint(8) unsigned DEFAULT NULL,
   `country` char(2) DEFAULT NULL,
-  `producer` varchar(255) DEFAULT NULL,
+  `producer` text,
   `awards` text,
   `synopsis` text,
   `officialReviews` text,
