@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 5.7.12, for osx10.10 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.18, for osx10.12 (x86_64)
 --
 -- Host: localhost    Database: filmaffinity
 -- ------------------------------------------------------
@@ -225,7 +225,7 @@ CREATE TABLE `film` (
   `awards` text,
   `synopsis` text,
   `officialReviews` text,
-  `rating` decimal(2,1) unsigned NULL DEFAULT NULL,
+  `rating` decimal(2,1) unsigned DEFAULT NULL,
   `numRatings` mediumint(8) unsigned DEFAULT NULL,
   PRIMARY KEY (`idFilm`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -243,7 +243,23 @@ CREATE TABLE `filmInTheatres` (
   `releaseDate` date NOT NULL,
   PRIMARY KEY (`idFilm`),
   UNIQUE KEY `idFilm_UNIQUE` (`idFilm`),
-  CONSTRAINT `fk_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fk_filmInTheatres_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `filmPopular`
+--
+
+DROP TABLE IF EXISTS `filmPopular`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `filmPopular` (
+  `idFilm` int(10) unsigned NOT NULL,
+  `ranking` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (`idFilm`),
+  UNIQUE KEY `idFilm_UNIQUE` (`idFilm`),
+  CONSTRAINT `fk_filmPopular_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -316,4 +332,4 @@ CREATE TABLE `topic` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-17 20:32:37
+-- Dump completed on 2018-03-07 15:07:52
