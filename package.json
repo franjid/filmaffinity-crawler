@@ -20,7 +20,6 @@
     "random-useragent": "^0.3.0",
     "rangegen": "^0.2.7",
     "request": "^2.72.0",
-    "sleep": "^5.1.0",
     "sys": "0.0.1"
   }
 }
