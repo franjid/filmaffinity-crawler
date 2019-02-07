@@ -57,7 +57,8 @@ Finally, to run this piece of code you have to use [Node.js](https://nodejs.org)
     all: Crawls all the movies
     new: Crawls new recently added movies
     popular: Crawls most popular movies from last week
-    theatres: Crawls films currently in theatres and update database
+    theatres: Crawls films currently in theatres
+    failed: Crawls films that previously failed to be crawled
     ```
 
     If you run it with the "all" action, it will start crawling films that start with numbers (two pages at a time), then letter A. When 'A' is completed it will continue with 'B'. Then 'C'... I'm sure you get the pattern ;) All data will be populated to the database and the poster images will be downloaded to the "img" folder.
