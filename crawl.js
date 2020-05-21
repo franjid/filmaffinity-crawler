@@ -12,7 +12,12 @@ global.parameters = ini.parse(
 
 global.filmError = {};
 
-arguments.getAction(function(action) {
+arguments.getAction(function(action, filmId) {
     var crawler = require(__dirname + '/lib/actions/' + action + '.js');
-    crawler.start();
+
+    if (action === 'id') {
+        crawler.start(filmId);
+    } else {
+        crawler.start();
+    }
 });
