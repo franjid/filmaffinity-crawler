@@ -329,6 +329,23 @@ CREATE TABLE `topic` (
   UNIQUE KEY `name_topic` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `idUser` int unsigned NOT NULL AUTO_INCREMENT,
+  `idUserFilmaffinity` int unsigned NOT NULL,
+  `cookieFilmaffinity` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`idUser`),
+  UNIQUE KEY `idUserFIlmaffinity` (`idUserFilmaffinity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
