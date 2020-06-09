@@ -78,10 +78,17 @@ function work(msg, cb) {
 
       var userFriendsCrawler = require(__dirname + '/lib/actions/user_friends.js');
 
+      console.log('\x1b[37m', '\tImporting user friends...');
+
       userFriendsCrawler.start(payload.userIdFilmaffinity, (friendsIds) => {
-        console.log('Now we should crawl last films from these users');
-        console.log(friendsIds);
-        cb(true);
+        var userFriendsRatingsCrawler = require(__dirname + '/lib/actions/user_friends_ratings.js');
+
+        console.log('\x1b[37m', '\tImporting last user friends ratings...');
+
+        userFriendsRatingsCrawler.start(friendsIds, () => {
+          console.log('\x1b[37m', '\tNow we should send a notification to firebase');
+          cb(true);
+        });
       })
 
       break;

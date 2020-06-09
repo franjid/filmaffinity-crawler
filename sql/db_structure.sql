@@ -346,6 +346,33 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `userFriendship`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `userFriendship` (
+  `idUserSource` int unsigned NOT NULL,
+  `idUserTarget` int unsigned NOT NULL,
+  UNIQUE KEY `source_target` (`idUserSource`,`idUserTarget`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TABLE IF EXISTS `userRating`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `userRating` (
+  `idUserRating` int unsigned NOT NULL AUTO_INCREMENT,
+  `idUser` int unsigned NOT NULL,
+  `idFilm` int unsigned NOT NULL,
+  `rating` int unsigned NOT NULL,
+  `dateAdded` int unsigned NOT NULL,
+  `position` int unsigned NOT NULL,
+  PRIMARY KEY (`idUserRating`),
+  UNIQUE KEY `idUser_idFilm` (`idUser`,`idFilm`),
+  KEY `idUser` (`idUser`),
+  KEY `idFilm` (`idFilm`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
