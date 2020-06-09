@@ -66,3 +66,9 @@ Finally, to run this piece of code you have to use [Node.js](https://nodejs.org)
     If you run it with the "all" action, it will start crawling [top popular films](https://www.filmaffinity.com/es/topgen.php).  All data will be populated to the database and the poster images will be downloaded to the "img" folder.
 
     You can take a look at crawler.log to see what is happening behind the scenes.
+
+# Worker
+
+There's one worker (`worker.js`) to consume jobs from RabbitMQ. Those messages are published through [Filmaffin API](https://github.com/franjid/filmaffin-api).
+
+At the moment the worker gets `UserAddedEvent` events. It gets and import user friends from Filmaffinity. 
