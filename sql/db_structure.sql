@@ -364,7 +364,7 @@ CREATE TABLE `userRating` (
   `idUser` int unsigned NOT NULL,
   `idFilm` int unsigned NOT NULL,
   `rating` int unsigned NOT NULL,
-  `dateAdded` int unsigned NOT NULL,
+  `dateRated` int unsigned NOT NULL,
   `position` int unsigned NOT NULL,
   PRIMARY KEY (`idUserRating`),
   UNIQUE KEY `idUser_idFilm` (`idUser`,`idFilm`),
