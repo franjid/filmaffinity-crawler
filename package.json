@@ -22,8 +22,8 @@
     "mkdirp": "^0.5",
     "mysql": "^2.16",
     "progress": "^2.0",
-    "random-useragent": "^0.3",
     "rangegen": "^0.2",
-    "request": "^2.88"
+    "request": "^2.88",
+    "user-agents": "^1.0.559"
   }
 }
