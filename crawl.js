@@ -12,15 +12,15 @@ global.parameters = ini.parse(
 
 global.filmError = {};
 
-arguments.getAction(function(action, filmId) {
+arguments.getAction(function(action, id) {
     var crawler = require(__dirname + '/lib/actions/' + action + '.js');
 
     process.on('uncaughtException', function (err) {
         // console.log('UNCAUGHT EXCEPTION - keeping process alive:', err);
     });
 
-    if (action === 'id') {
-        crawler.start(filmId);
+    if (action === 'user_friends' || action === 'id') {
+        crawler.start(id);
     } else {
         crawler.start();
     }

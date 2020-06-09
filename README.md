@@ -59,8 +59,10 @@ Finally, to run this piece of code you have to use [Node.js](https://nodejs.org)
     popular: Crawls most popular movies from last week
     theatres: Crawls films currently in theatres
     failed: Crawls films that previously failed to be crawled
+    user_friends: Crawls friends from a user id (filmaffinity id)
+    id: Crawls an specific film by id and outputs the film info (option used mostly for debug purposes)
     ```
 
-    If you run it with the "all" action, it will start crawling films that start with numbers (two pages at a time), then letter A. When 'A' is completed it will continue with 'B'. Then 'C'... I'm sure you get the pattern ;) All data will be populated to the database and the poster images will be downloaded to the "img" folder.
+    If you run it with the "all" action, it will start crawling [top popular films](https://www.filmaffinity.com/es/topgen.php).  All data will be populated to the database and the poster images will be downloaded to the "img" folder.
 
     You can take a look at crawler.log to see what is happening behind the scenes.

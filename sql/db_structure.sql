@@ -338,11 +338,11 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `idUser` int unsigned NOT NULL AUTO_INCREMENT,
-  `idUserFilmaffinity` int unsigned NOT NULL,
+  `idUser` int unsigned NOT NULL,
+  `name` varchar(128) DEFAULT NULL,
   `cookieFilmaffinity` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`idUser`),
-  UNIQUE KEY `idUserFIlmaffinity` (`idUserFilmaffinity`)
+  UNIQUE KEY `idUser_UNIQUE` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
