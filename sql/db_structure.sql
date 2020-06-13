@@ -341,6 +341,8 @@ CREATE TABLE `user` (
   `idUser` int unsigned NOT NULL,
   `name` varchar(128) DEFAULT NULL,
   `cookieFilmaffinity` varchar(128) DEFAULT NULL,
+  `dateAdded` int unsigned NOT NULL,
+  `dateUpdated` int unsigned DEFAULT NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE KEY `idUser_UNIQUE` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -74,7 +74,8 @@ function work(msg, cb) {
 
   switch (payload.eventName) {
     case 'UserAddedEvent':
-      console.log('\x1b[36m', '[Handling UserAddedEvent for user]');
+    case 'UserUpdatedEvent':
+      console.log('\x1b[36m', '[Handling ' + payload.eventName + ' for user]');
 
       var userFriendsCrawler = require(__dirname + '/lib/actions/user_friends.js');
 
