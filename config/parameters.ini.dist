@@ -1,0 +1,12 @@
+[parameters]
+    host = localhost
+    socketPath = '/tmp/mysql.sock'
+    db_user = filmaffinity
+    db_password = filmaffinity
+    db_name = filmaffinity
+    proxy = 'http://127.0.0.1:8123'
+    filmaffinity_host = 'https://www.filmaffinity.com'
+    img_dir = 'img/'
+    maximum_num_errors_loading_film = 5
+    rabbitmq_dsn = 'amqp://guest:guest@localhost:5672'
+    queue_name = filmaffin_api_events
