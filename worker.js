@@ -1,11 +1,14 @@
-var ini = require('ini');
-var fs = require('graceful-fs');
-var Log = require('log');
-var amqp = require('amqplib/callback_api');
+const ini = require('ini');
+const fs = require('graceful-fs');
+const Log = require('log');
+const amqp = require('amqplib/callback_api');
+var db = require(__dirname + '/lib/db.js');
+var dbImport = require(__dirname + '/lib/dbImport.js');
 
 global.parameters = ini.parse(fs.readFileSync(__dirname + '/config/parameters.ini', 'utf-8')).parameters;
 global.log = new Log('debug', fs.createWriteStream('worker.log'));
 
+const dbPool = db.getPool();
 var amqpConn = null;
 
 function start() {
@@ -67,6 +70,81 @@ function startWorker() {
   });
 }
 
+function buildFriendsSyncFinishedNotificationMessage(token) {
+  return {
+    'message': {
+      'token': token,
+      'notification': {
+        'title': 'Sincronización de amigos finalizada',
+        'body': 'Ya puedes ver las últimas votaciones de tus amigos'
+      },
+      'data': {
+        'action': 'friends_sync_finished'
+      },
+      'android': {
+        'notification': {
+          'sound': 'default',
+          'click_action': 'FCM_PLUGIN_ACTIVITY'
+        },
+      }
+    }
+  };
+}
+
+function handleUserAddedEvent(payload, cb) {
+  const userFriendsCrawler = require(__dirname + '/lib/actions/user_friends.js');
+  const userFriendsRatingsCrawler = require(__dirname + '/lib/actions/user_friends_ratings.js');
+  const notifications = require('@franjid/easy-firebase-notifications');
+
+  console.log('\x1b[36m', '[Handling ' + payload.eventName + ' for user]');
+  console.log('\x1b[37m', '\tImporting user friends...');
+
+  let userId = payload.userIdFilmaffinity;
+
+  userFriendsCrawler.start(userId, (friendsIds) => {
+    console.log('\x1b[37m', '\tImporting last user friends ratings...');
+
+    userFriendsRatingsCrawler.start(friendsIds, () => {
+      dbPool.getConnection(function (err, dbConnection) {
+        if (err) {
+          console.log(film);
+          global.log.error(err);
+          throw err;
+        }
+
+        dbImport.getUser(dbConnection, userId, function (user) {
+          dbConnection.destroy();
+
+          if (user[0].appNotificationsToken) {
+            const token = user[0].appNotificationsToken;
+
+            notifications.init(
+              global.parameters.notifications_project_id,
+              __dirname + global.parameters.notifications_service_account
+            ).then(() => {
+              notifications.sendMessage(buildFriendsSyncFinishedNotificationMessage(token)).then(function (result) {
+                console.log('\x1b[37m', '\tNotification sent');
+                result = JSON.parse(result);
+
+                if (result.error !== undefined) {
+                  console.log('\x1b[31m', '\tError sending notification:');
+                  console.log(result.error);
+                }
+
+                cb(true);
+              }, function (err) {
+                console.log('\x1b[31m', '\tError sending notification:');
+                console.log(err);
+                cb(true);
+              });
+            });
+          }
+        });
+      });
+    });
+  })
+}
+
 function work(msg, cb) {
   console.log('\x1b[36m', 'Processing job: ', msg.content.toString());
 
@@ -75,23 +153,7 @@ function work(msg, cb) {
   switch (payload.eventName) {
     case 'UserAddedEvent':
     case 'UserUpdatedEvent':
-      console.log('\x1b[36m', '[Handling ' + payload.eventName + ' for user]');
-
-      var userFriendsCrawler = require(__dirname + '/lib/actions/user_friends.js');
-
-      console.log('\x1b[37m', '\tImporting user friends...');
-
-      userFriendsCrawler.start(payload.userIdFilmaffinity, (friendsIds) => {
-        var userFriendsRatingsCrawler = require(__dirname + '/lib/actions/user_friends_ratings.js');
-
-        console.log('\x1b[37m', '\tImporting last user friends ratings...');
-
-        userFriendsRatingsCrawler.start(friendsIds, () => {
-          console.log('\x1b[37m', '\tNow we should send a notification to firebase');
-          cb(true);
-        });
-      })
-
+      handleUserAddedEvent(payload, cb);
       break;
     default:
       console.log('\x1b[31m', 'EventName in payload is not recognized. Ignoring message');

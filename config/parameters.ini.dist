@@ -10,3 +10,5 @@
     maximum_num_errors_loading_film = 5
     rabbitmq_dsn = 'amqp://guest:guest@localhost:5672'
     queue_name = filmaffin_api_events
+    notifications_project_id = ''
+    notifications_service_account = ''
