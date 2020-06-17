@@ -231,7 +231,7 @@ CREATE TABLE `film` (
   `producer` text,
   `awards` text,
   `synopsis` text,
-  `officialReviews` text,
+  `proReviews` text DEFAULT NULL,
   `rating` decimal(2,1) unsigned DEFAULT NULL,
   `numRatings` mediumint unsigned DEFAULT NULL,
   PRIMARY KEY (`idFilm`)
