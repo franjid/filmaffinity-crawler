@@ -6,6 +6,7 @@
     db_name = filmaffinity
     proxy = 'http://127.0.0.1:8123'
     filmaffinity_host = 'https://www.filmaffinity.com'
+    filmaffinity_mobile_host = 'https://m.filmaffinity.com'
     img_dir = 'img/'
     maximum_num_errors_loading_film = 5
     rabbitmq_dsn = 'amqp://guest:guest@localhost:5672'
