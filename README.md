@@ -61,6 +61,7 @@ Finally, to run this piece of code you have to use [Node.js](https://nodejs.org)
     failed: Crawls films that previously failed to be crawled
     user_friends: Crawls friends from a user id (filmaffinity id)
     user_friends_ratings: Crawls last ratings from users friends
+    user_friends_films: Crawls last films rated from friends (so those films are up to date)
     id: Crawls an specific film by id and outputs the film info (option used mostly for debug purposes)
     ```
 

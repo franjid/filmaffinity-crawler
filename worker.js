@@ -94,6 +94,7 @@ function buildFriendsSyncFinishedNotificationMessage(token) {
 function handleUserAddedEvent(payload, cb) {
   const userFriendsCrawler = require(__dirname + '/lib/actions/user_friends.js');
   const userFriendsRatingsCrawler = require(__dirname + '/lib/actions/user_friends_ratings.js');
+  const userFriendsFilmsCrawler = require(__dirname + '/lib/actions/user_friends_films.js');
   const notifications = require('@franjid/easy-firebase-notifications');
 
   console.log('\x1b[36m', '[Handling ' + payload.eventName + ' for user]');
@@ -112,33 +113,39 @@ function handleUserAddedEvent(payload, cb) {
           throw err;
         }
 
+        console.log('\x1b[37m', '\tImporting last friends films...');
+        userFriendsFilmsCrawler.start(); // We don't care when this finish
+
         dbImport.getUser(dbConnection, userId, function (user) {
           dbConnection.destroy();
 
-          if (user[0].appNotificationsToken) {
-            const token = user[0].appNotificationsToken;
-
-            notifications.init(
-              global.parameters.notifications_project_id,
-              __dirname + global.parameters.notifications_service_account
-            ).then(() => {
-              notifications.sendMessage(buildFriendsSyncFinishedNotificationMessage(token)).then(function (result) {
-                console.log('\x1b[37m', '\tNotification sent');
-                result = JSON.parse(result);
-
-                if (result.error !== undefined) {
-                  console.log('\x1b[31m', '\tError sending notification:');
-                  console.log(result.error);
-                }
-
-                cb(true);
-              }, function (err) {
-                console.log('\x1b[31m', '\tError sending notification:');
-                console.log(err);
-                cb(true);
-              });
-            });
+          if (!user.length || !user[0].appNotificationsToken) {
+            cb(true);
+            return;
           }
+
+          const token = user[0].appNotificationsToken;
+
+          notifications.init(
+            global.parameters.notifications_project_id,
+            __dirname + global.parameters.notifications_service_account
+          ).then(() => {
+            notifications.sendMessage(buildFriendsSyncFinishedNotificationMessage(token)).then(function (result) {
+              console.log('\x1b[37m', '\tNotification sent');
+              result = JSON.parse(result);
+
+              if (result.error !== undefined) {
+                console.log('\x1b[31m', '\tError sending notification:');
+                console.log(result.error);
+              }
+
+              cb(true);
+            }, function (err) {
+              console.log('\x1b[31m', '\tError sending notification:');
+              console.log(err);
+              cb(true);
+            });
+          });
         });
       });
     });

@@ -38,11 +38,9 @@ DROP TABLE IF EXISTS `assocFilmActor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assocFilmActor` (
-  `idAssocFilmActor` int unsigned NOT NULL AUTO_INCREMENT,
   `idFilm` int unsigned NOT NULL,
   `idActor` int unsigned NOT NULL,
   `relevancePosition` int unsigned NOT NULL,
-  PRIMARY KEY (`idAssocFilmActor`),
   UNIQUE KEY `unique_film_actor` (`idFilm`,`idActor`),
   KEY `assocFilmActor_fk_idActor_idx` (`idActor`),
   CONSTRAINT `assocFilmActor_fk_idActor` FOREIGN KEY (`idActor`) REFERENCES `actor` (`idActor`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -58,11 +56,9 @@ DROP TABLE IF EXISTS `assocFilmCinematographer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assocFilmCinematographer` (
-  `idAssocFilmCinematographer` int unsigned NOT NULL AUTO_INCREMENT,
   `idFilm` int unsigned NOT NULL,
   `idCinematographer` int unsigned NOT NULL,
   `relevancePosition` int unsigned NOT NULL,
-  PRIMARY KEY (`idAssocFilmCinematographer`),
   UNIQUE KEY `unique_film_cinematographer` (`idFilm`,`idCinematographer`),
   KEY `assocFilmCinematographer_fk_idCinematographer_idx` (`idCinematographer`),
   CONSTRAINT `assocFilmCinematographer_fk_idCinematographer` FOREIGN KEY (`idCinematographer`) REFERENCES `cinematographer` (`idCinematographer`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -78,11 +74,9 @@ DROP TABLE IF EXISTS `assocFilmDirector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assocFilmDirector` (
-  `idAssocFilmDirector` int unsigned NOT NULL AUTO_INCREMENT,
   `idFilm` int unsigned NOT NULL,
   `idDirector` int unsigned NOT NULL,
   `relevancePosition` int unsigned NOT NULL,
-  PRIMARY KEY (`idAssocFilmDirector`),
   UNIQUE KEY `unique_film_director` (`idFilm`,`idDirector`),
   KEY `assocFilmDirector_fk_idDirector_idx` (`idDirector`),
   CONSTRAINT `assocFilmDirector_fk_idDirector` FOREIGN KEY (`idDirector`) REFERENCES `director` (`idDirector`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -98,11 +92,9 @@ DROP TABLE IF EXISTS `assocFilmGenre`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assocFilmGenre` (
-  `idAssocFilmGenre` int unsigned NOT NULL AUTO_INCREMENT,
   `idFilm` int unsigned NOT NULL,
   `idGenre` int unsigned NOT NULL,
   `relevancePosition` int unsigned NOT NULL,
-  PRIMARY KEY (`idAssocFilmGenre`),
   UNIQUE KEY `unique_film_genre` (`idFilm`,`idGenre`),
   KEY `assocFilmGenre_fk_idGenre_idx` (`idGenre`),
   CONSTRAINT `assocFilmGenre_fk_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -118,11 +110,9 @@ DROP TABLE IF EXISTS `assocFilmMusician`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assocFilmMusician` (
-  `idAssocFilmMusician` int unsigned NOT NULL AUTO_INCREMENT,
   `idFilm` int unsigned NOT NULL,
   `idMusician` int unsigned NOT NULL,
   `relevancePosition` int unsigned NOT NULL,
-  PRIMARY KEY (`idAssocFilmMusician`),
   UNIQUE KEY `unique_film_musician` (`idFilm`,`idMusician`),
   KEY `assocFilmMusician_fk_idMusician_idx` (`idMusician`),
   CONSTRAINT `assocFilmMusician_fk_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -138,11 +128,9 @@ DROP TABLE IF EXISTS `assocFilmScreenplayer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assocFilmScreenplayer` (
-  `idAssocFilmScreenplayer` int unsigned NOT NULL AUTO_INCREMENT,
   `idFilm` int unsigned NOT NULL,
   `idScreenplayer` int unsigned NOT NULL,
   `relevancePosition` int unsigned NOT NULL,
-  PRIMARY KEY (`idAssocFilmScreenplayer`),
   UNIQUE KEY `unique_film_screenplayer` (`idFilm`,`idScreenplayer`),
   KEY `assocFilmScreenplayer_fk_idScreenplayer_idx` (`idScreenplayer`),
   CONSTRAINT `assocFilmScreenplayer_fk_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -158,11 +146,9 @@ DROP TABLE IF EXISTS `assocFilmTopic`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assocFilmTopic` (
-  `idAssocFilmTopic` int unsigned NOT NULL AUTO_INCREMENT,
   `idFilm` int unsigned NOT NULL,
   `idTopic` int unsigned NOT NULL,
   `relevancePosition` int unsigned NOT NULL,
-  PRIMARY KEY (`idAssocFilmTopic`),
   UNIQUE KEY `unique_film_topic` (`idFilm`,`idTopic`),
   KEY `assocFilmTopic_fk_idTopic_idx` (`idTopic`),
   CONSTRAINT `assocFilmTopic_fk_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -341,6 +327,7 @@ CREATE TABLE `user` (
   `idUser` int unsigned NOT NULL,
   `name` varchar(128) DEFAULT NULL,
   `cookieFilmaffinity` varchar(128) DEFAULT NULL,
+  `appNotificationsToken` varchar(255) DEFAULT NULL,
   `dateAdded` int unsigned NOT NULL,
   `dateUpdated` int unsigned DEFAULT NULL,
   PRIMARY KEY (`idUser`),
@@ -382,6 +369,29 @@ CREATE TABLE `userRating` (
   KEY `idFilm` (`idFilm`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `userReview`
+--
+
+DROP TABLE IF EXISTS `userReview`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `userReview` (
+  `idUser` int unsigned NOT NULL,
+  `idFilm` int unsigned NOT NULL,
+  `username` varchar(128) DEFAULT NULL,
+  `rating` int unsigned DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `review` text NOT NULL,
+  `spoiler` text,
+  `position` int NOT NULL DEFAULT '0',
+  `datePublished` int NOT NULL,
+  UNIQUE KEY `idUser_idFilm` (`idUser`,`idFilm`),
+  KEY `idUser` (`idUser`),
+  KEY `idFilm` (`idFilm`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -392,4 +402,4 @@ CREATE TABLE `userRating` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-12  9:28:53
+-- Dump completed on 2020-06-20 10:41:41
