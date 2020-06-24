@@ -220,7 +220,9 @@ CREATE TABLE `film` (
   `proReviews` text DEFAULT NULL,
   `rating` decimal(2,1) unsigned DEFAULT NULL,
   `numRatings` mediumint unsigned DEFAULT NULL,
-  PRIMARY KEY (`idFilm`)
+  `dateUpdated` int DEFAULT NULL,
+  PRIMARY KEY (`idFilm`),
+  KEY `dateUpdated` (`dateUpdated`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
