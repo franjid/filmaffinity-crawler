@@ -350,6 +350,20 @@ CREATE TABLE `userFriendship` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `userLastRatingNotificated`
+--
+
+DROP TABLE IF EXISTS `userLastRatingNotificated`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `userLastRatingNotificated` (
+  `idUser` int unsigned NOT NULL,
+  `idUserRating` int NOT NULL,
+  UNIQUE KEY `idUser_UNIQUE` (`idUser`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `userRating`
 --
 
