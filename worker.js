@@ -91,13 +91,34 @@ function buildFriendsSyncFinishedNotificationMessage(token) {
   };
 }
 
+function buildFriendsRatedNewFilmsNotificationMessage(token) {
+  return {
+    'message': {
+      'token': token,
+      'notification': {
+        'title': '¡Tus amigos han votado películas nuevas!',
+        'body': 'No te pierdas las nuevas votaciones de tus amigos'
+      },
+      'data': {
+        'action': 'friends_new_ratings'
+      },
+      'android': {
+        'notification': {
+          'sound': 'default',
+          'click_action': 'FCM_PLUGIN_ACTIVITY'
+        },
+      }
+    }
+  };
+}
+
 function handleUserAddedEvent(payload, cb) {
   const userFriendsCrawler = require(__dirname + '/lib/actions/user_friends.js');
   const userFriendsRatingsCrawler = require(__dirname + '/lib/actions/user_friends_ratings.js');
   const userFriendsFilmsCrawler = require(__dirname + '/lib/actions/user_friends_films.js');
   const notifications = require('@franjid/easy-firebase-notifications');
 
-  console.log('\x1b[36m', '[Handling ' + payload.eventName + ' for user]');
+  console.log('\x1b[36m', '[Handling ' + payload.eventName + ']');
   console.log('\x1b[37m', '\tImporting user friends...');
 
   let userId = payload.userIdFilmaffinity;
@@ -106,6 +127,13 @@ function handleUserAddedEvent(payload, cb) {
     console.log('\x1b[37m', '\tImporting last user friends ratings...');
 
     userFriendsRatingsCrawler.start(friendsIds, () => {
+
+      dbPool.getConnection(function (err, dbConnection) {
+        dbImport.setUserLastRatingNotification(dbConnection, userId, function () {
+          dbConnection.destroy();
+        });
+      });
+
       dbPool.getConnection(function (err, dbConnection) {
         if (err) {
           console.log(film);
@@ -152,6 +180,60 @@ function handleUserAddedEvent(payload, cb) {
   })
 }
 
+function handleUserFriendsRatedNewFilmsEvent(payload, cb) {
+  const notifications = require('@franjid/easy-firebase-notifications');
+
+  console.log('\x1b[36m', '[Handling ' + payload.eventName + ']');
+
+  let userId = payload.userIdFilmaffinity;
+
+  dbPool.getConnection(function (err, dbConnection) {
+    if (err) {
+      console.log(film);
+      global.log.error(err);
+      throw err;
+    }
+
+    dbPool.getConnection(function (err, dbConnection) {
+      dbImport.setUserLastRatingNotification(dbConnection, userId, function () {
+        dbConnection.destroy();
+      });
+    });
+
+    dbImport.getUser(dbConnection, userId, function (user) {
+      dbConnection.destroy();
+
+      if (!user.length || !user[0].appNotificationsToken) {
+        cb(true);
+        return;
+      }
+
+      const token = user[0].appNotificationsToken;
+
+      notifications.init(
+        global.parameters.notifications_project_id,
+        __dirname + global.parameters.notifications_service_account
+      ).then(() => {
+        notifications.sendMessage(buildFriendsRatedNewFilmsNotificationMessage(token)).then(function (result) {
+          console.log('\x1b[37m', '\tNotification sent');
+          result = JSON.parse(result);
+
+          if (result.error !== undefined) {
+            console.log('\x1b[31m', '\tError sending notification:');
+            console.log(result.error);
+          }
+
+          cb(true);
+        }, function (err) {
+          console.log('\x1b[31m', '\tError sending notification:');
+          console.log(err);
+          cb(true);
+        });
+      });
+    });
+  });
+}
+
 function work(msg, cb) {
   console.log('\x1b[36m', 'Processing job: ', msg.content.toString());
 
@@ -161,6 +243,9 @@ function work(msg, cb) {
     case 'UserAddedEvent':
     case 'UserUpdatedEvent':
       handleUserAddedEvent(payload, cb);
+      break;
+    case 'UserFriendsNewFilmsRatedEvent':
+      handleUserFriendsRatedNewFilmsEvent(payload, cb);
       break;
     default:
       console.log('\x1b[31m', 'EventName in payload is not recognized. Ignoring message');
