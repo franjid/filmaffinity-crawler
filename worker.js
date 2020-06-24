@@ -6,7 +6,14 @@ var db = require(__dirname + '/lib/db.js');
 var dbImport = require(__dirname + '/lib/dbImport.js');
 
 global.parameters = ini.parse(fs.readFileSync(__dirname + '/config/parameters.ini', 'utf-8')).parameters;
-global.log = new Log('debug', fs.createWriteStream('worker.log'));
+global.log = new Log(
+  'debug',
+  fs.createWriteStream(__dirname + '/worker.log', {
+    flags: 'a',
+    encoding: null,
+    mode: 0666
+  })
+);
 
 const dbPool = db.getPool();
 var amqpConn = null;
