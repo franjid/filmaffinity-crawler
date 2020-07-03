@@ -134,7 +134,6 @@ function handleUserAddedEvent(payload, cb) {
     console.log('\x1b[37m', '\tImporting last user friends ratings...');
 
     userFriendsRatingsCrawler.start(friendsIds, () => {
-
       dbPool.getConnection(function (err, dbConnection) {
         dbImport.setUserLastRatingNotification(dbConnection, userId, function () {
           dbConnection.destroy();
