@@ -169,13 +169,13 @@ function handleUserAddedEvent(payload, cb) {
               result = JSON.parse(result);
 
               if (result.error !== undefined) {
-                console.log('\x1b[31m', '\tError sending notification:');
+                console.log('\x1b[31m', '\tError sending notification to user ' + userId + ':');
                 console.log(result.error);
               }
 
               cb(true);
             }, function (err) {
-              console.log('\x1b[31m', '\tError sending notification:');
+              console.log('\x1b[31m', '\tError sending notification to user ' + userId + ':');
               console.log(err);
               cb(true);
             });
@@ -225,13 +225,13 @@ function handleUserFriendsRatedNewFilmsEvent(payload, cb) {
           result = JSON.parse(result);
 
           if (result.error !== undefined) {
-            console.log('\x1b[31m', '\tError sending notification:');
+            console.log('\x1b[31m', '\tError sending notification to user ' + userId + ':');
             console.log(result.error);
           }
 
           cb(true);
         }, function (err) {
-          console.log('\x1b[31m', '\tError sending notification:');
+          console.log('\x1b[31m', '\tError sending notification to user ' + userId + ':');
           console.log(err);
           cb(true);
         });
