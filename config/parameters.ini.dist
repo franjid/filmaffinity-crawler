@@ -13,3 +13,4 @@
     queue_name = filmaffin_api_events
     notifications_project_id = ''
     notifications_service_account = ''
+    proxy_api_key = your-own
