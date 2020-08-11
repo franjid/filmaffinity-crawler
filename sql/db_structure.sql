@@ -220,6 +220,7 @@ CREATE TABLE `film` (
   `proReviews` text DEFAULT NULL,
   `rating` decimal(2,1) unsigned DEFAULT NULL,
   `numRatings` mediumint unsigned DEFAULT NULL,
+  `numFrames` int unsigned NOT NULL DEFAULT '0',
   `dateUpdated` int DEFAULT NULL,
   PRIMARY KEY (`idFilm`),
   KEY `dateUpdated` (`dateUpdated`)
