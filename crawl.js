@@ -19,7 +19,7 @@ global.parameters = ini.parse(
 
 global.filmError = {};
 
-arguments.getAction(function (action, id) {
+arguments.getAction(function (action, argument) {
   var crawler = require(__dirname + '/lib/actions/' + action + '.js');
 
   process.on('uncaughtException', function (err) {
@@ -27,7 +27,9 @@ arguments.getAction(function (action, id) {
   });
 
   if (action === 'user_friends' || action === 'id') {
-    crawler.start(id);
+    crawler.start(argument);
+  } else if (action === 'new_platform') {
+    crawler.start(argument);
   } else {
     crawler.start();
   }
