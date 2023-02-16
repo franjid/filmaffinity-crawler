@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.19, for osx10.15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.23, for osx10.15 (x86_64)
 --
 -- Host: localhost    Database: filmaffinity
 -- ------------------------------------------------------
--- Server version	8.0.19
+-- Server version	8.0.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -121,6 +121,24 @@ CREATE TABLE `assocFilmMusician` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `assocFilmPlatform`
+--
+
+DROP TABLE IF EXISTS `assocFilmPlatform`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `assocFilmPlatform` (
+  `idFilm` int unsigned NOT NULL,
+  `idPlatform` int unsigned NOT NULL,
+  `relevancePosition` int unsigned NOT NULL,
+  UNIQUE KEY `unique_film_platform` (`idFilm`,`idPlatform`),
+  KEY `assocFilmPlatform_fk_idPlatform_idx` (`idPlatform`),
+  CONSTRAINT `assocFilmPlatform_fk_idFilm` FOREIGN KEY (`idFilm`) REFERENCES `film` (`idFilm`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `assocFilmPlatform_fk_idPlatform` FOREIGN KEY (`idPlatform`) REFERENCES `platform` (`idPlatform`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `assocFilmScreenplayer`
 --
 
@@ -217,11 +235,11 @@ CREATE TABLE `film` (
   `producer` text,
   `awards` text,
   `synopsis` text,
-  `proReviews` text DEFAULT NULL,
+  `proReviews` text,
   `rating` decimal(2,1) unsigned DEFAULT NULL,
   `numRatings` mediumint unsigned DEFAULT NULL,
   `numFrames` int unsigned NOT NULL DEFAULT '0',
-  `dateUpdated` int DEFAULT NULL,
+  `dateUpdated` int unsigned DEFAULT NULL,
   PRIMARY KEY (`idFilm`),
   KEY `dateUpdated` (`dateUpdated`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -288,6 +306,54 @@ CREATE TABLE `musician` (
   UNIQUE KEY `musician_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `newFilmsInPlatform`
+--
+
+DROP TABLE IF EXISTS `newFilmsInPlatform`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `newFilmsInPlatform` (
+  `idFilm` int NOT NULL,
+  `platform` varchar(20) NOT NULL,
+  `releaseDate` date NOT NULL,
+  UNIQUE KEY `idFilm_platform` (`idFilm`,`platform`),
+  KEY `platform` (`platform`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `platform`
+--
+
+DROP TABLE IF EXISTS `platform`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `platform` (
+  `idPlatform` int unsigned NOT NULL AUTO_INCREMENT,
+  `type` enum('subscription','rent','sell') NOT NULL,
+  `name` varchar(12) NOT NULL,
+  PRIMARY KEY (`idPlatform`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+INSERT INTO `platform` (`idPlatform`, `type`, `name`)
+VALUES
+    (1, 'subscription', 'amazon'),
+    (2, 'subscription', 'apple'),
+    (3, 'subscription', 'disney'),
+    (4, 'subscription', 'filmin'),
+    (5, 'subscription', 'hbo'),
+    (6, 'subscription', 'movistar'),
+    (7, 'subscription', 'netflix'),
+    (8, 'rent', 'amazon'),
+    (9, 'rent', 'apple'),
+    (10, 'rent', 'filmin'),
+    (11, 'rent', 'google'),
+    (12, 'sell', 'amazon'),
+    (13, 'sell', 'apple'),
+    (14, 'sell', 'google');
 
 --
 -- Table structure for table `screenplayer`
@@ -397,11 +463,11 @@ DROP TABLE IF EXISTS `userReview`;
 CREATE TABLE `userReview` (
   `idUser` int unsigned NOT NULL,
   `idFilm` int unsigned NOT NULL,
-  `username` varchar(128) DEFAULT NULL,
+  `username` varchar(128) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `rating` int unsigned DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `review` text NOT NULL,
-  `spoiler` text,
+  `title` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `review` text COLLATE utf8mb4_general_ci NOT NULL,
+  `spoiler` text COLLATE utf8mb4_general_ci,
   `position` int NOT NULL DEFAULT '0',
   `datePublished` int NOT NULL,
   UNIQUE KEY `idUser_idFilm` (`idUser`,`idFilm`),
@@ -419,4 +485,4 @@ CREATE TABLE `userReview` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-20 10:41:41
+-- Dump completed on 2023-02-16 18:35:11
