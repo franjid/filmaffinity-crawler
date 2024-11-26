@@ -19,6 +19,10 @@ global.parameters = ini.parse(
 
 global.filmError = {};
 
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+
 arguments.getAction(function (action, argument) {
   var crawler = require(__dirname + '/lib/actions/' + action + '.js');
 
